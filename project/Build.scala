@@ -41,11 +41,12 @@ object Build extends sbt.Build {
     description := "University of Tokyo Genome Browser",
     scalaVersion := SCALA_VERSION,
     javacOptions in Compile ++= defaultJavacOptions ++ Seq("-Xlint:unchecked", "-Xlint:deprecation", "-encoding", "UTF-8"),
-    javacOptions in Compile in doc := defaultJavacOptions ++ Seq("-windowtitle", "utgb API", "-linkoffline", "http://docs.oracle.com/javase/6/docs/api/", "http://docs.oracle.com/javase/6/docs/api/"),
+    javacOptions in Compile in doc := defaultJavacOptions ++ Seq("-windowtitle", "utgb API", "-linkoffline", "http://docs.oracle.com/javase/6/docs/api/", "http://docs.oracle.com/javase/6/docs/api/", "-exclude", "com.google", "-verbose"),
     scalacOptions ++= Seq("-encoding", "UTF-8", "-unchecked", "-deprecation", "-feature", "-target:jvm-1.6"),
     crossPaths := false,
 //    publishMavenStyle := true,
     publishArtifact in Test := false,
+    publishArtifact in (Compile, packageDoc) := false,
     publishTo <<= version {
       v => releaseResolver(v)
     },
