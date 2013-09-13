@@ -28,7 +28,6 @@ import org.utgenome.UTGBErrorCode;
 import org.utgenome.UTGBException;
 import org.utgenome.gwt.utgb.client.bio.ChrLoc;
 import org.utgenome.gwt.utgb.client.bio.ReferenceSequence;
-import org.utgenome.gwt.utgb.server.app.Sequence.SequenceRetrieverBase;
 import org.xerial.db.DBException;
 import org.xerial.db.sql.BeanResultHandler;
 import org.xerial.db.sql.PreparedStatementHandler;
