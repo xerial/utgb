@@ -6,30 +6,29 @@
 //--------------------------------------
 package org.utgenome.gwt.utgb.server.app;
 
-import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.HashMap;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.utgenome.UTGBException;
 import org.utgenome.format.fasta.FASTADatabase;
 import org.utgenome.format.fasta.FASTADatabase.NSeq;
+import org.utgenome.format.fasta.SequenceRetrieverBase;
 import org.utgenome.graphics.GenomeCanvas;
 import org.utgenome.graphics.GenomeWindow;
+import org.utgenome.graphics.GraphicUtil;
 import org.utgenome.gwt.utgb.client.bio.ChrLoc;
 import org.utgenome.gwt.utgb.server.WebTrackBase;
-import org.utgenome.graphics.GraphicUtil;
 import org.xerial.db.sql.BeanResultHandler;
 import org.xerial.json.JSONWriter;
 import org.xerial.util.log.Logger;
 import org.xerial.xml.XMLAttribute;
 import org.xerial.xml.XMLGenerator;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
 
 /**
  * SubSequence retrieves a genome sequence of the specified target in the range (start, end) (inclusive)
@@ -76,78 +75,6 @@ public class Sequence extends WebTrackBase {
 			start = 0;
 			end = 0;
 		}
-	}
-
-	public static abstract class SequenceRetrieverBase implements BeanResultHandler<NSeq> {
-
-		private static Logger _logger = Logger.getLogger(SequenceRetrieverBase.class);
-
-		private final int start;
-		private final int end;
-		private final boolean isReverseStrand;
-
-		private static HashMap<Character, Character> reverseStrandTable = new HashMap<Character, Character>();
-
-		static {
-			reverseStrandTable.put('a', 't');
-			reverseStrandTable.put('A', 'T');
-			reverseStrandTable.put('g', 'c');
-			reverseStrandTable.put('G', 'C');
-			reverseStrandTable.put('t', 'a');
-			reverseStrandTable.put('T', 'A');
-			reverseStrandTable.put('c', 'g');
-			reverseStrandTable.put('C', 'G');
-		}
-
-		public SequenceRetrieverBase(int start, int end, boolean isReverseStrand) {
-
-			assert (start <= end);
-			this.start = start;
-			this.end = end;
-
-			this.isReverseStrand = isReverseStrand;
-		}
-
-		public void handle(NSeq seq) throws SQLException {
-			int rangeStart = ((seq.getStart() < start) ? start - seq.getStart() : 0);
-			int rangeEnd = ((end > seq.getEnd()) ? seq.getLength() : end - seq.getStart() + 1);
-			output(seq.getSubSequence(rangeStart, rangeEnd));
-		}
-
-		public int getStart() {
-			return start;
-		}
-
-		public int getEnd() {
-			return end;
-		}
-
-		public boolean isReverseStrand() {
-			return isReverseStrand;
-		}
-
-		public abstract void output(String subSequence);
-
-		public char getComplement(char base) {
-			Character ch = reverseStrandTable.get(base);
-			if (ch == null)
-				return 'N';
-			else
-				return ch.charValue();
-		}
-
-		public void init() {
-
-		}
-
-		public void finish() {
-
-		}
-
-		public void handleException(Exception e) throws Exception {
-			_logger.error(e);
-		}
-
 	}
 
 	/**

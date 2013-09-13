@@ -9,21 +9,6 @@
 //--------------------------------------
 package org.utgenome.format.fasta;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
 import org.utgenome.UTGBErrorCode;
 import org.utgenome.UTGBException;
 import org.utgenome.gwt.utgb.client.bio.ChrLoc;
@@ -39,6 +24,12 @@ import org.xerial.util.log.Logger;
 import org.xerial.util.opt.Argument;
 import org.xerial.util.opt.Option;
 import org.xerial.util.opt.OptionParser;
+
+import java.io.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Fasta2DB creates a SQLite database file from a given FASTA format file
